@@ -1,5 +1,5 @@
 
-import mongoose, {Schema,Model } from "mongoose";
+import mongoose, {Schema} from "mongoose";
 import IUser from "../../entity/userEntity";
 
 
