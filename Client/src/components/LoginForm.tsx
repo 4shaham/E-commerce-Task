@@ -1,8 +1,3 @@
-
-
-import React from "react";
- 
-// @components
 import {
   Card,
   Input,
@@ -11,11 +6,58 @@ import {
   CardHeader,
   Typography,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
- 
+import { Link, useNavigate } from "react-router-dom";
+import { LoginFormData } from "../interface/FormData";
+import { useForm } from "react-hook-form";
+import { login } from "../api/user";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginStatusChange } from "../redux/slice/userAuthSlice";
 
  
 export function LoginForm() {
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setError,
+    formState:{errors},
+  } =useForm<LoginFormData>();
+  const dispatch=useDispatch()
+  const navigate=useNavigate()
+
+
+  const handleFormSubmit=async(data:LoginFormData)=>{
+      try {
+        
+      await login(data.email,data.password)
+      dispatch(loginStatusChange())
+      navigate("/")
+
+      } catch (error) {
+
+        if (axios.isAxiosError(error)) {
+            if (error.response?.data.message == "Email is not match"){
+              setError("email", {
+                type: "server",
+                message: error.response?.data.message,
+              });
+              return;
+            }
+    
+            if (error.response?.data.message == "Password is not match") {
+              setError("password", {
+                type: "server",
+                message: error.response?.data.message,
+              });
+              return;
+            }
+          }
+
+      }
+  }
+
   return (
     <Card
       shadow={false}
@@ -36,6 +78,7 @@ export function LoginForm() {
       <CardBody>
         <form
           className="flex flex-col gap-4 md:mt-12"
+          onSubmit={handleSubmit(handleFormSubmit)}
         >
           <div>
             <label htmlFor="email">
@@ -50,14 +93,25 @@ export function LoginForm() {
             <Input
               color="gray"
               size="lg"
-              type="email"
-              name="email"
               className="!w-full placeholder:!opacity-100 focus:!border-t-primary !border-t-blue-gray-200"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
+              {...register("email",{
+                required: "This field is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Please enter a valid email address",
+                },
+                onChange: (e) => setValue("email", e.target.value.trim()),
+              })}
               crossOrigin="croosorgin"
             />
+            {errors.email && (
+                <Typography color="red" className="text-start">
+                  {errors.email.message}
+                </Typography>
+            )}
              
              <label htmlFor="email">
               <Typography
@@ -77,8 +131,15 @@ export function LoginForm() {
                 className: "before:content-none after:content-none",
               }}
               crossOrigin="croosorgin"
-
+              {...register("password", {
+                required: "This field is required",
+              })}
             />
+            {errors.password && (
+                <Typography color="red" className="text-start">
+                  {errors.password.message}
+                </Typography>
+            )}
           </div>
           <Button size="lg" type="submit" color="gray" fullWidth>
             SignIn

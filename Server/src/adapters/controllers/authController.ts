@@ -61,4 +61,18 @@ export default class AuthController implements IAuthController {
   }
 
 
+  async verifyAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
+      try {
+        
+        const token=req.cookies.token 
+        console.log(token,"userToken")
+        const response=await this.authUseCase.verifyAuthUseCase(token)
+        res.status(StatusCode.success).json({decodedData:response})
+        
+      } catch (error) {
+          next(error)
+      }
+  }
+
+
 }

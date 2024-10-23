@@ -99,7 +99,16 @@ export default class AuthUseCase implements IAuthUseCase {
 
   }
 
+  async verifyAuthUseCase(token: string): Promise<any> {
+      try {
+        
+       const decodedData=await this.jwtService.verify(token)
+       return decodedData     
 
+      } catch (error) {
+          throw error
+      }
+  }
 
 
 }

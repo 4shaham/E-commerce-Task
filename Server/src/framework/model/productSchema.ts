@@ -15,7 +15,7 @@ const ProductSchema:Schema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    Qty: {
+    Qty:{
         type: Number,
         required: true
     },
@@ -23,8 +23,8 @@ const ProductSchema:Schema = new mongoose.Schema({
         type: String,
         required: true
     }]
-    
+
 });
 
-const Product=mongoose.model<IProduct>('Users',ProductSchema)
+const Product=mongoose.model<IProduct>('Users',ProductSchema)    
 export default Product
