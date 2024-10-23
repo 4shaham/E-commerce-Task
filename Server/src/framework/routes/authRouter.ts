@@ -35,7 +35,8 @@ const authController=new AuthController(authUseCase)
 
 router.post("/login",authController.login.bind(authController))
 router.post("/register",authController.register.bind(authController))
-
+router.post("/logout",authController.logOut.bind(authController))
+router.get("/tokenVerification",authController.verifyAuth.bind(authController))
 
 
 

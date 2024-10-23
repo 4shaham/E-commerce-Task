@@ -65,13 +65,14 @@ export default class AuthController implements IAuthController {
       try {
         
         const token=req.cookies.token 
-        console.log(token,"userToken")
+        console.log(token,"userToken") 
         const response=await this.authUseCase.verifyAuthUseCase(token)
         res.status(StatusCode.success).json({decodedData:response})
-        
+
       } catch (error) {
           next(error)
       }
+
   }
 
 

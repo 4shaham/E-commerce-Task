@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import { loginStatusChange, logOutStatusChange } from "../../redux/slice/userAuthSlice";
+import { tokenVerification } from "../../api/user";
 
 function LoginAndRegistration() {
   
@@ -14,7 +15,7 @@ function LoginAndRegistration() {
 
       const handleFn=async()=>{
           try {
-            // await tokenVerification()
+            await tokenVerification()
             setUserStatus(true)
             dispatch(loginStatusChange())
 

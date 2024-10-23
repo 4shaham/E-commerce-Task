@@ -8,7 +8,7 @@ export const userRegister=async(userName:string,email:string,password:string,con
 
 export const logout=async():Promise<any>=>await api.post(userEndPoints.logout)
 
-
+export const tokenVerification=async():Promise<any>=>await api.get(userEndPoints.tokenVerification)
 
 
 

@@ -9,13 +9,8 @@ import {
   IconButton,
   List,
   ListItem,
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
 } from "@material-tailwind/react";
 import {
-  ChevronDownIcon,
   Bars3Icon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -35,53 +30,7 @@ import { Link } from "react-router-dom";
 import { logout } from "../api/user";
 import { logOutStatusChange } from "../redux/slice/userAuthSlice";
 
-const navListMenuItems = [
-  {
-    title: "Products",
-    description: "Find the perfect solution for your needs.",
-    icon: SquaresPlusIcon,
-  },
-  {
-    title: "About Us",
-    description: "Meet and learn about our dedication",
-    icon: UserGroupIcon,
-  },
-  {
-    title: "Blog",
-    description: "Find the perfect solution for your needs.",
-    icon: Bars4Icon,
-  },
-  {
-    title: "Services",
-    description: "Learn how we can help you achieve your goals.",
-    icon: SunIcon,
-  },
-  {
-    title: "Support",
-    description: "Reach out to us for assistance or inquiries",
-    icon: GlobeAmericasIcon,
-  },
-  {
-    title: "Contact",
-    description: "Find the perfect solution for your needs.",
-    icon: PhoneIcon,
-  },
-  {
-    title: "News",
-    description: "Read insightful articles, tips, and expert opinions.",
-    icon: NewspaperIcon,
-  },
-  {
-    title: "Products",
-    description: "Find the perfect solution for your needs.",
-    icon: RectangleGroupIcon,
-  },
-  {
-    title: "Special Offers",
-    description: "Explore limited-time deals and bundles",
-    icon: TagIcon,
-  },
-];
+
 
 
 function NavList() {
@@ -94,11 +43,9 @@ function NavList() {
         color="blue-gray"
         className="font-medium"
       >
-        <ListItem className="flex items-center gap-2 py-2 pr-4">Home</ListItem>
+       <Link to={"/"}><ListItem className="flex items-center gap-2 py-2 pr-4">Home</ListItem></Link>
       </Typography>
-      <Typography
-        as="a"
-        href="#"
+      <Link to={"/products"}><Typography
         variant="small"
         color="blue-gray"
         className="font-medium"
@@ -106,7 +53,7 @@ function NavList() {
         <ListItem className="flex items-center gap-2 py-2 pr-4">
           Prodoucts
         </ListItem>
-      </Typography>
+      </Typography></Link>
     </List>
   );
 }
@@ -153,11 +100,13 @@ export default function NavbarWithMegaMenu() {
         <div className="hidden gap-2 lg:flex">
           {userAuthStatus ? (
             <>
-              <CgProfile className="text-3xl" />
-              <FaShoppingCart className="text-3xl" />
+
+              <Link to={"/profile"}><CgProfile className="text-3xl"/></Link>
+              <Link to={"/cart"}><FaShoppingCart className="text-3xl"/></Link> 
               <Button variant="gradient" color="red" size="sm" onClick={handleLogOutClick}>
                 LogOut
               </Button>
+            
             </>
           ) : (
            <Link to={"/login"}><Button variant="gradient" size="sm">
