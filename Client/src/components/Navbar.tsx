@@ -1,4 +1,6 @@
 import React from "react";
+import { FaShoppingCart } from "react-icons/fa";  
+import { CgProfile } from "react-icons/cg";
 import {
   Navbar,
   Collapse,
@@ -97,7 +99,7 @@ function NavListMenu() {
               color="blue-gray"
               className="flex items-center text-sm font-bold"
             >
-              {title}
+              {title}  
             </Typography>
             <Typography
               variant="paragraph"
@@ -212,12 +214,13 @@ export default function NavbarWithMegaMenu() {
           <NavList />
         </div>
         <div className="hidden gap-2 lg:flex">
-          <Button variant="text" size="sm" color="blue-gray">
-            Log Out
-          </Button>
+          <CgProfile className="text-3xl"/> 
+          <FaShoppingCart className="text-3xl" />
+          
           <Button variant="gradient" size="sm">
             Sign In
           </Button>
+
         </div>
         <IconButton
           variant="text"
@@ -227,7 +230,7 @@ export default function NavbarWithMegaMenu() {
         >
           {openNav ? (
             <XMarkIcon className="h-6 w-6" strokeWidth={2} />
-          ) : (
+          ):(
             <Bars3Icon className="h-6 w-6" strokeWidth={2} />
           )}
         </IconButton>

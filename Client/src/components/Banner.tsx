@@ -1,6 +1,3 @@
-import React from "react";
-import { Typography } from "@material-tailwind/react";
-import { Cog8ToothIcon } from "@heroicons/react/24/solid";
 import image from "../assets/Gray Minimalist New Collection Banner.png";
 
 export function BannerImage() {

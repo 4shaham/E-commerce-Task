@@ -23,6 +23,7 @@ const ProductSchema:Schema = new mongoose.Schema({
         type: String,
         required: true
     }]
+    
 });
 
 const Product=mongoose.model<IProduct>('Users',ProductSchema)
