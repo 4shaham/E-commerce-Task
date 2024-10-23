@@ -11,48 +11,54 @@ export default class AuthController implements IAuthController {
     this.authUseCase = authUseCase;
   }
 
-  async login(req: Request, res: Response,next:NextFunction): Promise<void> {
-        try {
-            console.log("req nody",req.body)
-            res.status(StatusCode.success).json(
-                "success"
-            )
-        } catch (error) {
-            next(error)
-        }
+  async login(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { email, password } = req.body;
 
-  }
-
-  async register(req: Request, res: Response,next:NextFunction): Promise<void> {
-       try {
-
-        const {userName,email,password,confirmPassword}=req.body 
-       
-        if(!userName ||!email||!password||!confirmPassword){
-            throw new Errors("All fields are required",StatusCode.badRequest)
-        }  
-
-        await this.authUseCase.registerUserUseCase({userName,email,password,confirmPassword})
-        res.status(StatusCode.success).json({message:"successfully created"})    
-
-       }catch (error){
-          next(error)
-       }  
-
-  }
-
-
-  async logOut(req: Request, res: Response,next:NextFunction): Promise<void> {
-      try {
-          
-
-
-      } catch (error) {
-           next(error)
+      if (!email || !password) {
+        throw new Errors("all field is required", StatusCode.forBidden);
       }
+
+      const response = await this.authUseCase.loginUseCase({ email, password });
+      res.cookie("token", response.token, { maxAge: 3600000 });
+      res.status(StatusCode.success).json(response);
+    } catch (error) {
+      next(error);
+    }
   }
 
+  async register(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const { userName, email, password, confirmPassword } = req.body;
 
+      if (!userName || !email || !password || !confirmPassword) {
+        throw new Errors("All fields are required", StatusCode.badRequest);
+      }
+
+      await this.authUseCase.registerUserUseCase({
+        userName,
+        email,
+        password,
+        confirmPassword,
+      });
+      res.status(StatusCode.success).json({ message: "successfully created" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async logOut(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      res.cookie("token", "", { maxAge: 3600000 });
+      res.status(StatusCode.success).json({ message: "successfully logOut" });
+    } catch (error) {
+      next(error);
+    }
+  }
 
 
 }

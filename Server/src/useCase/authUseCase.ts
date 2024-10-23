@@ -2,7 +2,7 @@ import { StatusCode } from "../enums/statusCode";
 import Errors from "../errors/error";
 import { IAuthRepository } from "../interface/iRepository/iAuthRepository";
 import IAuthUseCase from "../interface/iUseCase/iAuthUseCase";
-import { RegisterBodyData } from "../interface/other.ts/IBodyData";
+import { LoginBody, LoginResponse, RegisterBodyData } from "../interface/other.ts/IBodyData";
 import IHashingService from "../interface/utils/iHasingService";
 import IJwtService from "../interface/utils/iJwtService";
 
@@ -60,6 +60,43 @@ export default class AuthUseCase implements IAuthUseCase {
     } catch (error) {  
       throw error;
     }
+
+  }
+
+
+ 
+  async loginUseCase(data: LoginBody): Promise<LoginResponse> {
+        try {
+            
+            // email validation 
+       const emailRegex = /\S+@\S+\.\S+/;
+       if (!emailRegex.test(data.email)){
+            throw new Errors("email format is not valid",StatusCode.forBidden)
+       };
+
+
+            let user=await this.authRepository.emailIsExists(data.email)
+
+            if(!user){
+                throw new Errors("Email is not match",StatusCode.notFound)
+            }
+
+
+
+            if(!await this.hashingService.compare(data.password,user.password) ){
+                throw new Errors("Password is not match",StatusCode.UnAuthorized)
+            }
+
+            const token=await this.jwtService.createToken({email:user.email,id:user._id})
+            return {
+                message:"login is sucessfully",
+                token:token    
+            }
+
+        }catch(error){
+             throw error
+        }
+
   }
 
 
