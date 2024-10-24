@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from "axios";
 
 
 const api:AxiosInstance=axios.create({
-  baseURL: "http://localhost:",
+  baseURL: "http://localhost:4002",
   withCredentials: true,
 });
 

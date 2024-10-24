@@ -65,7 +65,12 @@ export default class AuthController implements IAuthController {
       try {
         
         const token=req.cookies.token 
-        console.log(token,"userToken") 
+        
+        if(!token){
+          res.status(StatusCode.UnAuthorized).json({message:"token is empty"})
+          return
+        }
+
         const response=await this.authUseCase.verifyAuthUseCase(token)
         res.status(StatusCode.success).json({decodedData:response})
 

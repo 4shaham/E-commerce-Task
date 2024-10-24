@@ -31,7 +31,8 @@ export function LoginForm() {
   const handleFormSubmit=async(data:LoginFormData)=>{
       try {
         
-      await login(data.email,data.password)
+     let response= await login(data.email,data.password)
+     console.log(response,"hiiii heloo")
       dispatch(loginStatusChange())
       navigate("/")
 
