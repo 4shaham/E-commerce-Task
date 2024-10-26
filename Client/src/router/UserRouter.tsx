@@ -15,7 +15,7 @@ function UserRouter() {
         <Route path={"/register"} element={<RegisterForm />} />
       </Route>
 
-      <Route element={<MainPage />}>
+      <Route element={<MainPage/>}>
         <Route path={"/"} element={<HomePage />} />
         <Route path={"/products"} element={<ProductPage />} />
         <Route element={<AuthorizationPage />}>
