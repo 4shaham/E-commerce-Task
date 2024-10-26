@@ -18,10 +18,14 @@ function UserRouter() {
 
       <Route element={<MainPage/>}>
         <Route path={"/"} element={<HomePage />} />
-        <Route path={"/products"} element={<ProductPage />} />
+        <Route path={"/products"} element={<ProductPage/>}/>
+        <Route path={"/product"} element={<ProductPage/>}/>
         <Route element={<AuthorizationPage />}>
           <Route path={"/cart"} element={<CartPage/>} />
           <Route path={"/profile"} element={<ProductPage />} />
+          <Route path={"/checkOut"} element={<ProductPage />} />
+          <Route path={"/order"} element={<ProductPage />} />
+          <Route path={"/wishList"} element={<ProductPage />} />
         </Route>
       </Route>
     </Routes>
