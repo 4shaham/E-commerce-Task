@@ -6,6 +6,7 @@ import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 import ProductPage from "../pages/user/ProductPage";
 import AuthorizationPage from "../pages/user/AuthorizationPage";
+import CartPage from "../pages/user/CartPage";
 
 function UserRouter() {
   return (
@@ -19,7 +20,7 @@ function UserRouter() {
         <Route path={"/"} element={<HomePage />} />
         <Route path={"/products"} element={<ProductPage />} />
         <Route element={<AuthorizationPage />}>
-          <Route path={"/cart"} element={<HomePage />} />
+          <Route path={"/cart"} element={<CartPage/>} />
           <Route path={"/profile"} element={<ProductPage />} />
         </Route>
       </Route>
