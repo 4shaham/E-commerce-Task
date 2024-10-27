@@ -65,5 +65,5 @@ const OrderSchema:Schema=new Schema({
     },
 });
 
-const Order=mongoose.model<IOrder>('Users',OrderSchema)
+const Order=mongoose.model<IOrder>('Order',OrderSchema)
 export default Order

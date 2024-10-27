@@ -5,12 +5,14 @@ import { StatusCode } from "../../enums/statusCode";
 import Errors from "../../errors/error";
 
 export default class AuthController implements IAuthController {
+  
   private authUseCase: IAuthUseCase;
 
   constructor(authUseCase: IAuthUseCase) {
-    this.authUseCase = authUseCase;
+     this.authUseCase = authUseCase;
   }
-
+  
+  
   async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { email, password } = req.body;
@@ -65,7 +67,6 @@ export default class AuthController implements IAuthController {
       try {
         
         const token=req.cookies.token 
-        
         if(!token){
           res.status(StatusCode.UnAuthorized).json({message:"token is empty"})
           return

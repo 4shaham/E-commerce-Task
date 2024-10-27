@@ -23,10 +23,9 @@ const UserSchema:Schema=new Schema({
 
 
 const Users=mongoose.model<IUser>('Users',UserSchema)
-  
 export default Users
    
-
+       
 
 
 

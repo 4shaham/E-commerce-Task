@@ -8,11 +8,13 @@ import cookieParser from "cookie-parser";
 import errorHandlerMiddleware from "../middleware/errorHandlerMiddleware"
 
 
-// routers
-import authRouter from "../routes/authRouter"
-
 // env
 dotenv.config()
+
+// routers
+import authRouter from "../routes/authRouter"
+import adminRouter from "../routes/adminRouter"
+
 
 
 
@@ -36,12 +38,12 @@ app.use(cors({
 }))
 
 
-
-app.use('/api',authRouter)
-
-
 // morgan for get all routes console
 app.use(morgan('dev'))  
+
+
+app.use('/api',authRouter)
+app.use('/api/admin',adminRouter)
 
 
 

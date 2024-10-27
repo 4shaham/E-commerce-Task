@@ -8,7 +8,7 @@ export default class AuthRepository implements IAuthRepository{
 
     private users:Model<IUser>;
     constructor(users:Model<IUser>){
-        this.users=users
+        this.users=users 
     }
 
     async emailIsExists(email: string): Promise<IUser | null> {

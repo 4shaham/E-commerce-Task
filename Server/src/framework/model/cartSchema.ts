@@ -12,11 +12,11 @@ const CartSchema:Schema=new Schema(
     },
     cartItems: [
       {
-        productId: {
-          type: mongoose.Schema.Types.ObjectId,
+        productId:{
+          type:mongoose.Schema.Types.ObjectId,
           required: true,
         },
-        quantity: {
+        quantity:{
           type: Number,
           default: 1
         }
@@ -25,7 +25,7 @@ const CartSchema:Schema=new Schema(
   },
   {
     timestamps: true 
-  }
+  }  
 );
 
 

@@ -9,26 +9,30 @@ import AdminUseCase from "../../useCase/adminUseCase";
 import AdminController from "../../adapters/controllers/adminController";
 import AdminRepository from "../../adapters/respositorie/adminRepositorie";
 
+
 // db collection 
+import CategoryModel from "../model/category";
+import Product from "../model/productSchema";
 
 
 // services 
-
-
+import CloudinaryService from "../utils/cloudinaryService";
+   
+const cloudinaryService=new CloudinaryService()
 
 
 // middleware
 
+const adminRepository=new AdminRepository(CategoryModel,Product)
+const adminUseCase=new AdminUseCase(adminRepository,cloudinaryService)
+const adminController=new AdminController(adminUseCase)
 
 
-
-const authRepository=new AdminRepository()
-const authUseCase=new AdminUseCase()
-const authController=new AdminController()
-
-
-
-
+router.post("/addCart",adminController.addCategory.bind(adminController))
+router.post("/addProduct",adminController.addProduct.bind(adminController))
+router.get("/getCategoary",adminController.getCategory.bind(adminController))
+router.get("/getProducts",adminController.getProducts.bind(adminController))
+router.get("/getProduct",adminController.getProduct.bind(adminController))
 
 
 export default router

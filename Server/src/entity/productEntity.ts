@@ -1,7 +1,19 @@
+
+
+export interface SizeAndStock{
+    size:"S"|"M"|"L"|"XL",
+    quantity:number
+}
+
 export default interface IProduct{
-    pname: string;
-    category: string; // Fixed the spelling from "cateogary" to "category"
+    _id:string;
+    pName: string;
+    category: string; 
+    description:string;
+    // sizeAndStock:SizeAndStock[]
+    size:"S"|"M"|"L"|"XL";
+    quantity:number;
     price: number;
-    Qty: number; // You may want to consider naming this "quantity" for clarity
-    image: string[]; // Array of strings for image URLs
+    image: string[]; 
+    colour:string;
 }
