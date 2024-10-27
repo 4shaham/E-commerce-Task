@@ -10,6 +10,7 @@ export default class AdminController implements IAdminController{
     this.adminUseCase = adminUseCase;
   }
 
+  
   async addCategory(
     req: Request,
     res: Response,
@@ -40,7 +41,7 @@ export default class AdminController implements IAdminController{
     }
   }
 
- async  getCategory(req:Request,res:Response,next:NextFunction):Promise<void>{
+ async getCategory(req:Request,res:Response,next:NextFunction):Promise<void>{
      try {
 
         const response=await this.adminUseCase.getCategoryUseCase()
@@ -76,3 +77,6 @@ export default class AdminController implements IAdminController{
     }
   }
 }
+
+
+

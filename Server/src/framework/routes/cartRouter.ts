@@ -21,13 +21,19 @@ import Product from "../model/productSchema";
 
 
 // middleware
+import authorizationMiddleware from "../middleware/authorizarionMiddleware";
 
 
 
+const cartRepository=new CartRepository(Cart,Product)
+const cartUseCase=new CartUseCase(cartRepository)
+const cartController=new CartController(cartUseCase)
 
-const authRepository=new CartRepository(Cart,Product)
-const authUseCase=new CartUseCase()
-const authController=new CartController()
+
+router.post("/addCart",authorizationMiddleware,cartController.addToCart.bind(cartController))
+router.post("/removeCart",authorizationMiddleware,cartController.removeCart.bind(cartController))
+
+
 
 
 

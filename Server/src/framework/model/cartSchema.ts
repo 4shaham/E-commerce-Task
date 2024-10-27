@@ -25,7 +25,7 @@ const CartSchema:Schema=new Schema(
   },
   {
     timestamps: true 
-  }  
+  } 
 );
 
 
