@@ -36,7 +36,7 @@ export default class AuthController implements IAuthController {
   ): Promise<void> {
     try {
       const { userName, email, password, confirmPassword } = req.body;
-
+      console.log(req.body)
       if (!userName || !email || !password || !confirmPassword) {
         throw new Errors("All fields are required", StatusCode.badRequest);
       }

@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import mongoose, { Model } from "mongoose";
 import ICategory from "../../entity/cateogaryEntity";
 import CategoryModel from "../../framework/model/category";
 import IAdminRepository from "../../interface/iRepository/iAdminRepository";
@@ -38,7 +38,8 @@ export default class AdminRepository implements IAdminRepository {
       const product = new this.product({
           pName:pName, 
           category:category, 
-          price:description,
+          description:description,
+          price:price,
           size:size,
           quantity:quantity, 
           image:image,
@@ -67,13 +68,13 @@ export default class AdminRepository implements IAdminRepository {
 
     } catch (error) {
        throw error
-    }
+    } 
  }
 
- async findProduct(id:string):Promise<IProduct|null>{
+ async findProduct(id:string):Promise<IProduct|null>{ 
     try {
        
-      return await this.product.findOne({_id:id})
+      return await this.product.findOne({_id:new mongoose.Types.ObjectId(id)})
 
     } catch (error) {
        throw error

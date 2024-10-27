@@ -17,21 +17,22 @@ export default class AdminUseCase implements IAdminUseCase {
   async addCategoryUseCase(categoryName:string,image:string): Promise<void> {
     try {
 
-         if(categoryName.trim()==""||image==""){
+         if(categoryName?.trim()==""||!categoryName||image?.trim()==""||!image){
               throw new Errors("image and categoryName field is requried",StatusCode.badRequest)
          }
 
+       
 
         // isExeed checked 
         
-        categoryName=categoryName.split("")[0].toUpperCase()+categoryName.split('').slice(1,categoryName.length-1)
-        console.log(categoryName,"capitalized name")
+        categoryName = categoryName?.charAt(0).toUpperCase() + categoryName?.slice(1);  
+        
         const isExeed=await this.adminRepository.isExceed(categoryName)
- 
+     
         if(isExeed){
             throw new Errors("The cateogary name is already used",StatusCode.badRequest)
-        }
-        
+        }    
+          
         // store image 
        let imageUrl=await this.cloudinaryService.uploadImage(image)
 
@@ -49,34 +50,46 @@ export default class AdminUseCase implements IAdminUseCase {
 
         // all fields are requird 
          
-        if(pName.trim()!=""||category.trim()==""||description.trim()==""||size.trim()==""||
-           quantity==null||price==null||image.length==0||colour.trim()==""
-         ){
-          throw new Errors("all fields are requried",StatusCode.badRequest)
-         }
+        if (
+          pName?.trim() === "" || !pName||
+          category?.trim() === "" || !category||
+          description?.trim() === "" || !description||
+          size?.trim() === "" || !size ||
+          quantity == null || !quantity ||
+          price == null || !price ||
+          image.length === 0 || !image||  
+          colour?.trim() === "" ||!colour
+        ) {
+          throw new Errors("All fields are required", StatusCode.badRequest);
+        }
+        
 
+       
          //Price Is Greater Than 0 
-         if(price>0) throw new Errors("Proudct Price must be greater than 0",StatusCode.badRequest)
+         if(price<=0) throw new Errors("Proudct Price must be greater than 0",StatusCode.badRequest)
 
          //qty
-         if(quantity>0) throw new Errors("Proudct Price must be greater than 0",StatusCode.badRequest) 
+         if(quantity<=0) throw new Errors("Categoary count than 0",StatusCode.badRequest) 
 
         // isCategaory
+       
         let isExceed=await this.adminRepository.isExceed(category)
+       
         if(!isExceed){
             throw new Errors("categaory is not valide",StatusCode.badRequest)
         }
 
         //Store Multiple Image 
-        console.log(image)
+       
+        let arr=[]
         for(let values of image){
-            values=await this.cloudinaryService.uploadImage(values)
+           let v=await this.cloudinaryService.uploadImage(values)      
+           arr.push(v)
         }
-        console.log(image)
 
         //Store product 
         
-        await this.adminRepository.storeProuduct(pName,category,description,size,quantity,price,image,colour)
+        await this.adminRepository.storeProuduct(pName,category,description,size,quantity,price,arr,colour)
         
       } catch (error) {
          throw error
@@ -90,10 +103,10 @@ export default class AdminUseCase implements IAdminUseCase {
             return await this.adminRepository.findCateogary()
 
           } catch (error) {
-             throw error
+             throw error 
           }
   }
-
+   
   async getProducts(categoryName:string):Promise<IProduct|null[]>{
        try {
 
@@ -116,3 +129,4 @@ export default class AdminUseCase implements IAdminUseCase {
 
 
 }
+      

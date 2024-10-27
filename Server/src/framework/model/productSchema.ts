@@ -7,21 +7,26 @@ const ProductSchema: Schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    description:{
+      type:String,
+      requried:true,
+    },
     category: {
       type: String,
       required: true,
     },
-    price: {
+    price: {  
       type: Number,
       required: true,
+      min:0
     },
     size: {
       type: String,
-      required: true,
+      required: true,   
       enum: ["S", "M", "L", "XL"],
     },
     quantity: {
-      type: Number,
+      type:Number,
       min: 0,
       required: true,
     },

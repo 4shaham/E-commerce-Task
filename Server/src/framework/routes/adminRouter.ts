@@ -28,7 +28,7 @@ const adminUseCase=new AdminUseCase(adminRepository,cloudinaryService)
 const adminController=new AdminController(adminUseCase)
 
 
-router.post("/addCart",adminController.addCategory.bind(adminController))
+router.post("/addCategory",adminController.addCategory.bind(adminController))
 router.post("/addProduct",adminController.addProduct.bind(adminController))
 router.get("/getCategoary",adminController.getCategory.bind(adminController))
 router.get("/getProducts",adminController.getProducts.bind(adminController))

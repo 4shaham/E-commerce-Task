@@ -13,7 +13,7 @@ export default interface IProduct{
     // sizeAndStock:SizeAndStock[]
     size:"S"|"M"|"L"|"XL";
     quantity:number;
-    price: number;
+    price:number;
     image: string[]; 
     colour:string;
 }
