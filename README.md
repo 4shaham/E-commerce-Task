@@ -1,52 +1,53 @@
-E-commerce Project
-This is a full-stack e-commerce application designed to provide a seamless online shopping experience, featuring user authentication, product listings, shopping cart functionality, and payment processing.
+# Dellas Cowboy - E-commerce Project
+
+Dellas Cowboy is a full-stack e-commerce platform built with the MERN stack (MongoDB, Express, React, Node.js) and TypeScript. Designed for fashion enthusiasts, it specializes in selling a wide range of stylish dresses. The platform offers a seamless shopping experience with user-friendly navigation, secure authentication, a shopping cart, and integrated payment processing. Built for scalability and performance, Dellas Cowboy ensures a modern and engaging online shopping experience.
 
 
+## Installation 
+1. **Clone the repository:** 
+```
+bash git clone <repository-url> 
+cd <repository-name> 
+```
 
-# Start backend server
+2. **Install dependencies**:
 
-cd Sever
-npm start
+Run `npm i` to install the project dependencies.
+```bash
+npm i
+```
+## Environment Configuration
+Create a .env file in the root directory of the project. Here is an example configuration:
+```
+ADMIN_EMAIL = admin@gmail.com
+ADMIN_PASSWORD = password
+PORT=4000
+DATABASE_HOST=localhost
+DATABASE_USER=root
+DATABASE_PASSWORD=yourpassword
+DATABASE_NAME=yourdatabase
+JWT_SECRET=yourjwtsecret
 
-# Start frontend server
+```
+Replace the placeholders with your actual database credentials and JWT secret.
 
-cd Client
-npm npm run dev 
+## Database Setup
+ **Create a MySQL database:**
 
+Use the MySQL command line or a tool like phpMyAdmin to create a new database.
+```
+CREATE DATABASE yourdatabase;
+```
+Update your .env file with the database connection details.
 
-Folder Structure
-ecommerce-project/
-├── Server/
-│   ├── src/
-│   │   ├── adapters/
-│   │   ├── entity/
-│   │   ├── enums/
-│   │   ├── errors/
-│   │   ├── framework/
-         --         
-│   └── server.ts
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── utils/
-│   └── index.tsx
-└── README.md
+## Running the Server
+**Start the development server:**
 
-
-Environment Variables
-The project requires the following environment variables:
-
-Backend .env file:
-
-PORT=4002 
-MONGO_URI="mongodb+srv://shahamsalam123:eWT5aeT5rlPZIwa6@cluster0.rabcj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-JWT_SECRET_key="MuhammedShaham"
-CLOUDINARY_CLOUD_NAME=djbwtsuhu  
-CLOUDINARY_API_KEY=463646489434671     
-CLOUDINARY_API_SECRET=YjRHt9abliWMhCXSY9c1_iK09sM 
+Run `npm run dev` to start the server using ts-node-dev.
+```
+npm run dev
+```
+Navigate to http://localhost:4000/ to access the server.
 
 
 
