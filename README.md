@@ -64,7 +64,7 @@ Ensure you have the following installed on your local machine:
 1. Navigate to the `backend` folder:
 
     ```bash
-    cd ../Client
+    cd ../Server
     ```
 
 2. Install dependencies:
@@ -79,7 +79,11 @@ Ensure you have the following installed on your local machine:
 
     ```env
     PORT=5000
-    MONGODB_URI=your_mongodb_connection_string
+    MONGODB_URI="mongodb+srv://shahamsalam123:eWT5aeT5rlPZIwa6@cluster0.rabcj.mongodb.net/"
+    CLOUDINARY_CLOUD_NAME=djbwtsuhu  
+    CLOUDINARY_API_KEY=463646489434671     
+    CLOUDINARY_API_SECRET=YjRHt9abliWMhCXSY9c1_iK09sM  
+    JWT_SECRET_key="MuhammedShaham"
     ```
 
 4. Start the backend server:
