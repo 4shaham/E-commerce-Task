@@ -23,7 +23,7 @@ const hashingService=new HashingServices()
 const jwtService=new JwtService()
 
 // middleware
-
+import authorizationMiddleware from "../middleware/authorizarionMiddleware";
 
 
 
@@ -37,7 +37,7 @@ router.post("/login",authController.login.bind(authController))
 router.post("/register",authController.register.bind(authController))
 router.post("/logout",authController.logOut.bind(authController))
 router.get("/tokenVerification",authController.verifyAuth.bind(authController))
-
+router.get("/userData",authorizationMiddleware,authController.userProfileData.bind(authController))
 
 
 

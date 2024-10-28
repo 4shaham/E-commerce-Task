@@ -1,6 +1,6 @@
-import { Model } from "mongoose";
+import mongoose, { Model } from "mongoose";
 import ICart from "../../entity/cartEnitity";
-import ICartRepository from "../../interface/iRepository/iCartRepository";
+import ICartRepository, { CartLookUp } from "../../interface/iRepository/iCartRepository";
 import IProduct from "../../entity/productEntity";
 import IUser from "../../entity/userEntity";
 
@@ -15,11 +15,11 @@ export default class CartRepository implements ICartRepository {
   async addToCartRepository(userId: string, productId: string): Promise<void> {
     try{
 
-      let isExceed = await this.cart.findOne({ userId: userId });
 
+      let isExceed = await this.cart.findOne({userId: userId });
       if (!isExceed) {
         const data = new this.cart({
-          userId: userId,
+          userId:userId,
           cartItems:[
             {
               productId: productId,
@@ -27,12 +27,12 @@ export default class CartRepository implements ICartRepository {
           ],
         });
         await data.save();
-
+        return
       }
 
       await this.cart.updateOne(
         { userId: userId },
-        { $push: { cartItems: productId } }
+        { $push:{cartItems:{productId:productId}} }
       );
 
     } catch (error) {
@@ -51,25 +51,41 @@ export default class CartRepository implements ICartRepository {
     }
   }
 
-  async findCart(userId: string): Promise<ICart| null> {
-      try {
+  async findCart(userId: string): Promise<CartLookUp | null []> {
+    try {
         
-         let a= await this.cart.aggregate([
-            {$match:{userId:userId}},
-            {$lookup:{
-                "from":"Cart",
-                "localField":"productId",
-                "foreignField":"_id",
-                "as":"ProductDetails"
-            }}
-        ])
-        console.log(a,"aggreagted data")
-        return await this.cart.findOne({userId:userId})
+        let a= await this.cart.aggregate([
+            {
+                $match: { userId: new mongoose.Types.ObjectId(userId) }
+            },
+            {
+                $unwind: "$cartItems",
+            },
+            {
+                $lookup: {
+                    from: "products",  // Ensure this matches the actual collection name in MongoDB
+                    localField: "cartItems.productId",
+                    foreignField: "_id",
+                    as: "productDetails"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$productDetails"  // Add `$` to specify the field correctly
+                }
+            }
+        ]);
+     
+        console.log(a)
+        return a
+            
+      
+
 
       } catch (error) {
-        throw error
+        throw error  
       }
-  } 
+  }
  
 
   async updateQtyCart(userId:string,productId:string,qty:number):Promise<void>{

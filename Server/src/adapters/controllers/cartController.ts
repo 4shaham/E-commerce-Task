@@ -17,7 +17,8 @@ export default class CartController implements ICartController {
   ): Promise<void> {
     try {
       const userId = req.userId;
-      const productId = req.query.id;
+      const productId =req.body.id;
+      console.log(productId,userId)
       await this.cartUseCase.addToCart(userId as string,productId as string)
       res.status(StatusCode.success).json({message:"successfully added"})
     } catch (error) {
@@ -32,8 +33,10 @@ export default class CartController implements ICartController {
   ): Promise<void> {
     try {
       const userId = req.userId;
-      const productId = req.query.id;
+      const productId = req.body.id;
+      console.log(productId)
       await this.cartUseCase.removeCart(userId as string,productId as string)
+      res.status(StatusCode.success).json({message:"succesfully remove"})
     } catch (error) {
       next(error);
     }

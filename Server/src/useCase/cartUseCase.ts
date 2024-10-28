@@ -2,7 +2,7 @@
 import ICart from "../entity/cartEnitity";
 import { StatusCode } from "../enums/statusCode";
 import Errors from "../errors/error";
-import ICartRepository from "../interface/iRepository/iCartRepository";
+import ICartRepository, { CartLookUp } from "../interface/iRepository/iCartRepository";
 import ICartUseCase from "../interface/iUseCase/iCartUseCase";
 
 export default class CartUseCase implements ICartUseCase{
@@ -16,12 +16,11 @@ export default class CartUseCase implements ICartUseCase{
     async addToCart(userId:string,productId:string):Promise<void>{
         try {
             
-            if(userId?.trim()==""||!userId||!productId||productId?.trim()){
+            if(userId?.trim()==""||!userId||!productId||productId?.trim()==""){
                 throw new Errors("productId is required",StatusCode.badRequest)
             }
 
             const product=await this.cartRepository.findProduct(productId)
-
             if(!product){
                throw new Errors("product id is not valid",StatusCode.badRequest)
             }
@@ -40,7 +39,7 @@ export default class CartUseCase implements ICartUseCase{
     async removeCart(userId:string,productId:string):Promise<void>{
         try {
 
-            if(userId?.trim()==""||!userId||!productId||productId?.trim()){
+            if(userId?.trim()==""||!userId||!productId||productId?.trim()==""){
                 throw new Errors("productId is required",StatusCode.badRequest)
             }
             
@@ -51,7 +50,7 @@ export default class CartUseCase implements ICartUseCase{
         }
     }
 
-    async getCart(userId:string):Promise<ICart|null>{
+    async getCart(userId:string):Promise<CartLookUp|null[]>{
         try {
             
            return await this.cartRepository.findCart(userId)

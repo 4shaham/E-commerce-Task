@@ -11,9 +11,9 @@ export default interface IProduct{
     category: string; 
     description:string;
     // sizeAndStock:SizeAndStock[]
-    size:"S"|"M"|"L"|"XL";
+    size:"S"|"M"|"L"|"XL";   
     quantity:number;
     price:number;
-    image: string[]; 
-    colour:string;
-}
+    image: string[];     
+    colour:string;  
+}                 

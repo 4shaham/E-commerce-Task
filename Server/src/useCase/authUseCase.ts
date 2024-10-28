@@ -1,3 +1,4 @@
+import IUser from "../entity/userEntity";
 import { StatusCode } from "../enums/statusCode";
 import Errors from "../errors/error";
 import { IAuthRepository } from "../interface/iRepository/iAuthRepository";
@@ -108,6 +109,16 @@ export default class AuthUseCase implements IAuthUseCase {
       } catch (error) {
           throw error
       }
+  }
+
+  async getProfileData(userId:string):Promise<IUser|null>{
+     try {
+      
+     return await this.authRepository.getUserData(userId)
+
+     } catch (error) {
+       throw error
+     }
   }
 
 

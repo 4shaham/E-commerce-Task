@@ -3,6 +3,7 @@ import IAuthController from "../../interface/iController/iAuthController";
 import IAuthUseCase from "../../interface/iUseCase/iAuthUseCase";
 import { StatusCode } from "../../enums/statusCode";
 import Errors from "../../errors/error";
+import IRequest from "../../interface/other.ts/IRequest";
 
 export default class AuthController implements IAuthController {
   
@@ -79,6 +80,25 @@ export default class AuthController implements IAuthController {
           next(error)
       }
 
+  }
+
+
+  async userProfileData(req:IRequest,res:Response,next:NextFunction):Promise<void>{
+    try { 
+      const userId=req.userId
+      const userData=await this.authUseCase.getProfileData(userId as string)
+      res.status(StatusCode.success).json({userData:userData})
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async updateProfile(req:IRequest,res:Response,next:NextFunction):Promise<void>{
+      try {
+         const userId=req.userId
+      } catch (error) {
+         throw error
+      }
   }
 
 

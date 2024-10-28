@@ -14,6 +14,7 @@ dotenv.config()
 // routers
 import authRouter from "../routes/authRouter"
 import adminRouter from "../routes/adminRouter"
+import cartRouter from "../routes/cartRouter"
 
 
 
@@ -43,6 +44,7 @@ app.use(morgan('dev'))
 
 
 app.use('/api',authRouter)
+app.use('/api',cartRouter)
 app.use('/api/admin',adminRouter)
 
 

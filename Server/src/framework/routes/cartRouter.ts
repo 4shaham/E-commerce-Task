@@ -31,8 +31,9 @@ const cartController=new CartController(cartUseCase)
 
 
 router.post("/addCart",authorizationMiddleware,cartController.addToCart.bind(cartController))
-router.post("/removeCart",authorizationMiddleware,cartController.removeCart.bind(cartController))
-
+router.put("/removeCart",authorizationMiddleware,cartController.removeCart.bind(cartController))
+router.patch("/updateQuantity",authorizationMiddleware,cartController.cartQuantityUpdate.bind(cartController))
+router.get("/getCart",authorizationMiddleware,cartController.findCart.bind(cartController))
 
 
 
