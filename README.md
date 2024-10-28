@@ -10,8 +10,9 @@ bash git clone <repository-url>
 cd <repository-name> 
 ```
 
-2. **Install dependencies**:
+2. **Install Backend Dependencies**:
 
+    `cd Server` 
 Run `npm i` to install the project dependencies.
 ```bash
 npm i
