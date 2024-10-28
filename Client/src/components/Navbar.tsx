@@ -14,17 +14,6 @@ import {
   Bars3Icon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import {
-  Bars4Icon,
-  GlobeAmericasIcon,
-  NewspaperIcon,
-  PhoneIcon,
-  RectangleGroupIcon,
-  SquaresPlusIcon,
-  SunIcon,
-  TagIcon,
-  UserGroupIcon,
-} from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../api/user";

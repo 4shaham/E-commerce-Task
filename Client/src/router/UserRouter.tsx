@@ -7,6 +7,9 @@ import RegisterForm from "../components/RegisterForm";
 import ProductPage from "../pages/user/ProductPage";
 import AuthorizationPage from "../pages/user/AuthorizationPage";
 import CartPage from "../pages/user/CartPage";
+import SingleProductPage from "../pages/user/SingleProductPage";
+import CheckoutPage from "../pages/user/checkOutPage";
+import UserProfile from "../pages/user/ProfilePage";
 
 function UserRouter() {
   return (
@@ -25,13 +28,13 @@ function UserRouter() {
           {/* Open Routes */}
           <Route path={"/"} element={<HomePage />} />
           <Route path={"/products"} element={<ProductPage/>}/>
-          <Route path={"/product"} element={<ProductPage/>}/>
+          <Route path={"/product"} element={<SingleProductPage/>}/>
 
           {/* Authorization Routes */}
           <Route element={<AuthorizationPage />}>
             <Route path={"/cart"} element={<CartPage/>} />
-            <Route path={"/profile"} element={<ProductPage />} />
-            <Route path={"/checkOut"} element={<ProductPage />} />
+            <Route path={"/profile"} element={<UserProfile/>} />
+            <Route path={"/checkOut"} element={<CheckoutPage/>} />
             <Route path={"/order"} element={<ProductPage />} />
             <Route path={"/wishList"} element={<ProductPage />} />
           </Route>

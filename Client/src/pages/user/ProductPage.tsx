@@ -1,78 +1,95 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {Filter, Grid2X2, Grid3X3} from "lucide-react";
 import { Button } from "@material-tailwind/react";
 import ProductCard from "../../components/ProductCard";
+import { getProducts } from "../../api/user";
+import { IProduct } from "../../interface/responseData";
 
 function ProductPage() {
+
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [gridView, setGridView] = useState("grid-3");
+  const [products,setProducts]=useState<IProduct[]>()
 
-  const products = [
-    {
-      name: "Oversized Wool Blend Coat",
-      price: "$199.90",
-      images: [
-        "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
-        "/api/placeholder/400/500",
-      ],
-    },
-    {
-      name: "High-Waist Wide Leg Trousers",
-      price: "$89.90",
-      images: [
-        "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
-        "/api/placeholder/400/500",
-      ],
-    },
-    {
-      name: "Structured Blazer with Belt",
-      price: "$129.90",
-      images: [
-        "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
-        "/api/placeholder/400/500",
-      ],
-    },
-    {
-      name: "Pleated Midi Skirt",
-      price: "$69.90",
-      images: [
-        "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
-        "/api/placeholder/400/500",
-      ],
-    },
-    {
-      name: "Knit Sweater with Collar",
-      price: "$79.90",
-      images: [
-        "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
-        "/api/placeholder/400/500",
-      ],
-    },
-    {
-      name: "Satin Effect Shirt",
-      price: "$59.90",
-      images: [
-        "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
-        "/api/placeholder/400/500",
-      ],
-    },
-    {
-      name: "Cargo Pants with Pockets",
-      price: "$89.90",
-      images: [
-        "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
-        "/api/placeholder/400/500",
-      ],
-    },
-    {
-      name: "Ribbed Jersey Dress",
-      price: "$45.90",
-      images: [
-        "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
-        "/api/placeholder/400/500",
-      ],
-    },
-  ];
+  useEffect(()=>{
+    const handleAsync=async()=>{
+       try {
+          const response=await getProducts()
+          console.log(response.data)
+          setProducts(response.data.products)
+       } catch (error) {
+          console.log(error)
+       }
+    }
+    handleAsync()
+},[])
+
+  // const products = [
+  //   {
+  //     name: "Oversized Wool Blend Coat",
+  //     price: "$199.90",
+  //     images: [
+  //       "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
+  //       "/api/placeholder/400/500",
+  //     ],
+  //   },
+  //   {
+  //     name: "High-Waist Wide Leg Trousers",
+  //     price: "$89.90",
+  //     images: [
+  //       "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
+  //       "/api/placeholder/400/500",
+  //     ],
+  //   },
+  //   {
+  //     name: "Structured Blazer with Belt",
+  //     price: "$129.90",
+  //     images: [
+  //       "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
+  //       "/api/placeholder/400/500",
+  //     ],
+  //   },
+  //   {
+  //     name: "Pleated Midi Skirt",
+  //     price: "$69.90",
+  //     images: [
+  //       "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
+  //       "/api/placeholder/400/500",
+  //     ],
+  //   },
+  //   {
+  //     name: "Knit Sweater with Collar",
+  //     price: "$79.90",
+  //     images: [
+  //       "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
+  //       "/api/placeholder/400/500",
+  //     ],
+  //   },
+  //   {
+  //     name: "Satin Effect Shirt",
+  //     price: "$59.90",
+  //     images: [
+  //       "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
+  //       "/api/placeholder/400/500",
+  //     ],
+  //   },
+  //   {
+  //     name: "Cargo Pants with Pockets",
+  //     price: "$89.90",
+  //     images: [
+  //       "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
+  //       "/api/placeholder/400/500",
+  //     ],
+  //   },
+  //   {
+  //     name: "Ribbed Jersey Dress",
+  //     price: "$45.90",
+  //     images: [
+  //       "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
+  //       "/api/placeholder/400/500",
+  //     ],
+  //   },
+  // ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -163,7 +180,7 @@ function ProductPage() {
               : "grid-cols-2 sm:grid-cols-3 gap-4"
           }`}
         >
-          {products.map((product, index) => (
+          {products?.map((product, index) => (
             <ProductCard key={index} {...product} />
           ))}
         </div>

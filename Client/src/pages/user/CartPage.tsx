@@ -1,60 +1,58 @@
-import React from "react";
-import { Card, CardBody } from "@material-tailwind/react";
+import {useEffect,useState} from "react";
+import {Card,CardBody} from "@material-tailwind/react";
 import { Button } from "@material-tailwind/react";
 import { Minus, Plus, X, ShoppingBag, Lock } from "lucide-react";
+import { getCart, removeCart } from "../../api/user";
+import { Link } from "react-router-dom";
+
 
 const CartPage = () => {
-  const [items, setItems] = React.useState([
-    {
-      id: 1,
-      name: "Oversized Cotton T-Shirt",
-      size: "L",
-      color: "Black",
-      price: 29.99,
-      quantity: 1,
-      image:
-        "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
-    },
-    {
-      id: 2,
-      name: "High-Waist Tapered Jeans",
-      size: "30",
-      color: "Blue",
-      price: 89.99,
-      quantity: 1,
-      image:
-        "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
-    },
-    {
-      id: 3,
-      name: "Classic Leather Jacket",
-      size: "M",
-      color: "Brown",
-      price: 199.99,
-      quantity: 1,
-      image:
-      "https://static.zara.net/assets/public/7914/e214/02864376aa32/eb332e88508c/01195302701-a1/01195302701-a1.jpg?ts=1719997844582&w=563",
-    },
-  ]);
 
-  const updateQuantity = (id: any, change: any) => {
-    setItems(
-      items.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + change) }
-          : item
+
+  const [items, setItems] = useState<any[]>();
+
+  useEffect(() => {
+    const handleAsync = async () => {
+      try {
+        const response = await getCart();
+        console.log(response.data.cartData);
+        setItems(response.data.cartData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    handleAsync();
+  }, []);
+
+  const updateQuantity = (id: any,change:any)=>{
+     setItems(
+      items?.map((item) =>
+        item.cartItems._id === id
+          ? {
+              ...item,
+              cartItems:{
+                ...item.cartItems,
+                quantity:Math.max(1, item.cartItems.quantity+change),
+              },
+            }
+          :item
       )
     );
+    
+    console.log(items)
   };
 
-  const removeItem = (id:string) => {
-    setItems(items.filter((item:any)=> item.id != id));
+  const removeItem = async(id:string)=>{
+     try {
+      await removeCart(id)
+      setItems(items?.filter((item:any)=>item.cartItems.productId !=id ));
+     } catch (error) {
+       console.log(error)
+     }
+   
   };
 
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const subtotal = 1000;
   const shipping = 9.99;
   const tax = subtotal * 0.1;
   const total = subtotal + shipping + tax;
@@ -69,58 +67,62 @@ const CartPage = () => {
           <div className="flex-grow">
             <Card className="mb-4">
               <CardBody className="divide-y">
-                {items.map((item) => (
+                {items?.map((item) => (
                   <div key={item.id} className="py-6 first:pt-4 last:pb-4">
                     <div className="flex gap-4">
-                      {/* Product Image */}
                       <div className="w-24 h-32 rounded-lg overflow-hidden bg-gray-100">
                         <img
-                          src={item.image}
-                          alt={item.name}
+                          src={item.productDetails.image[0]}
+                          alt={item.productDetails.pName}
                           className="w-full h-full object-cover"
                         />
                       </div>
 
-                      {/* Product Details */}
                       <div className="flex-grow">
                         <div className="flex justify-between">
                           <div>
                             <h3 className="font-medium text-gray-900">
-                              {item.name}
+                              {item.productDetails.pName}
                             </h3>
                             <p className="text-sm text-gray-500 mt-1">
-                              Size: {item.size} | Color: {item.color}
+                              Size: {item.productDetails.size} | Color:{" "}
+                              {item.productDetails.colour}
                             </p>
                           </div>
                           <button
-                            onClick={() => removeItem(item.id as any)}
+                            onClick={() =>
+                              removeItem(item.cartItems.productId as any)
+                            }
                             className="text-gray-400 hover:text-gray-600"
                           >
                             <X className="h-5 w-5" />
                           </button>
                         </div>
 
-                        {/* Price and Quantity */}
                         <div className="flex justify-between items-center mt-4">
                           <div className="flex items-center border rounded-lg">
                             <button
-                              onClick={() => updateQuantity(item.id, -1)}
+                              onClick={() => updateQuantity(item.cartItems._id, -1)}
                               className="p-2 hover:bg-gray-50"
                             >
                               <Minus className="h-4 w-4" />
                             </button>
                             <span className="px-4 py-2 text-center min-w-[40px]">
-                              {item.quantity}
+                              {item.cartItems.quantity}
                             </span>
                             <button
-                              onClick={() => updateQuantity(item.id, 1)}
+                              onClick={() => updateQuantity(item.cartItems._id,1)}
                               className="p-2 hover:bg-gray-50"
                             >
                               <Plus className="h-4 w-4" />
                             </button>
                           </div>
                           <p className="font-medium">
-                            ${(item.price * item.quantity).toFixed(2)}
+                            $
+                            {(
+                              item.productDetails.price *
+                              item.productDetails.quantity
+                            ).toFixed(2)}
                           </p>
                         </div>
                       </div>
@@ -157,15 +159,17 @@ const CartPage = () => {
                   </div>
                 </div>
 
-                <Button className="w-full mt-6 h-12 text-base gap-2">
-                  <Lock className="h-4 w-4" />
-                  Checkout
-                </Button>
+                <Link to={"/checkOut"}>
+                  <Button className="w-full mt-6 h-12 text-base gap-2 ">
+                    <Lock className="h-4 w-4" />
+                    Checkout
+                  </Button>
+                </Link>
 
                 <div className="mt-6 pt-6 border-t text-center">
                   <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
                     <ShoppingBag className="h-4 w-4" />
-                    <span>{items.length} items in cart</span>
+                    <span>{items?.length} items in cart</span>
                   </div>
                 </div>
               </CardBody>

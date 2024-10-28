@@ -91,7 +91,16 @@ export function RegisterForm() {
                 className: "before:content-none after:content-none",
               }}
               crossOrigin="croosorgin"
-            />    
+              {...register("userName",{
+                required: "This field is required",
+                onChange: (e) => setValue("userName", e.target.value.trim()),
+              })}
+            />   
+             {errors.password && (
+              <Typography color="red" className="text-start">
+                {errors.password.message}
+              </Typography>
+            )} 
 
             <label htmlFor="email">
               <Typography
