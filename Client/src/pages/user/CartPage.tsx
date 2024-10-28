@@ -24,6 +24,22 @@ const CartPage = () => {
     handleAsync();
   }, []);
 
+  const removeItem = async(id:string)=>{
+    try {
+     await removeCart(id)
+     setItems(items?.filter((item:any)=>item.cartItems.productId !=id ));
+    } catch (error) {
+      console.log(error)
+    }
+  
+ };
+
+
+
+ const subtotal=items?items?.reduce((total,values)=>values.cartItems.quantity*values.productDetails.price+total,0):0
+ const shipping =0;
+ const tax = subtotal*0.1;
+ const total=subtotal+shipping+tax;
   const updateQuantity = (id: any,change:any)=>{
      setItems(
       items?.map((item) =>
@@ -38,24 +54,13 @@ const CartPage = () => {
           :item
       )
     );
+
+    console.log(items?.reduce((total,values)=>values.cartItems.quantity*values.productDetails.price+total,0))
     
     console.log(items)
   };
 
-  const removeItem = async(id:string)=>{
-     try {
-      await removeCart(id)
-      setItems(items?.filter((item:any)=>item.cartItems.productId !=id ));
-     } catch (error) {
-       console.log(error)
-     }
-   
-  };
 
-  const subtotal = 1000;
-  const shipping = 9.99;
-  const tax = subtotal * 0.1;
-  const total = subtotal + shipping + tax;
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

@@ -29,7 +29,7 @@ export default class AuthController implements IAuthController {
       });
       res.status(StatusCode.success).json(response);
     } catch (error) {
-      next(error);
+      next(error);      
     }
   }
 
