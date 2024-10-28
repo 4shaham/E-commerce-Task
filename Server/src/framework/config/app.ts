@@ -35,9 +35,11 @@ app.use(cookieParser());
 
 app.use(cors({
     // origin:"http://localhost:5173",
-    origin:"https://e-commerce-task-ten.vercel.app",
+    origin:"https://ecommerce.shaham.website",
     credentials:true
 }))
+
+
 
 
 // morgan for get all routes console
