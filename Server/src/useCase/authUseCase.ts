@@ -1,3 +1,4 @@
+import IAddress from "../entity/addressEntity";
 import IUser from "../entity/userEntity";
 import { StatusCode } from "../enums/statusCode";
 import Errors from "../errors/error";
@@ -119,6 +120,46 @@ export default class AuthUseCase implements IAuthUseCase {
      } catch (error) {
        throw error
      }
+  }
+
+
+  async addAdress(userId:string,
+    name: string,
+    postalCode: string,
+    address: string,
+    phoneNumber: number,
+    city: string):Promise<void>{
+      try {
+
+        // the addrss is exceeed 
+
+        if(name.trim()==""||!name ||postalCode.trim()==""||!postalCode||address.trim()==""||!address||city.trim()==""||!city){
+           throw new Errors("all filds are required",StatusCode.badRequest)
+        }
+
+        let isDb=await this.authRepository.addressDbIsExist(userId)
+
+        if(!isDb){
+          await this.authRepository.storeAddress(userId,name,postalCode,address
+            ,phoneNumber,city
+          )
+        }else{
+          await this.authRepository.pushAddress(userId,name,postalCode,address,phoneNumber,city)
+        }
+      } catch (error) {
+        throw error
+      }
+  }
+
+
+  async getAddressUseCase(userId:string):Promise<IAddress|null>{
+    try {
+      
+      return await this.authRepository.getAddress(userId)
+
+    } catch (error) {
+       throw error
+    }
   }
 
 

@@ -7,19 +7,19 @@ export interface IOrderItem {
     orderStatus: string;
 }
 
-export interface IAddress {
+export interface OrderAddress {
     name: string;
-    address: string;
-    phone: number;
+    address: string;    
+    phoneNumber: number;
     city: string;
     postalCode: number;
 }
 
 export default interface IOrder{
     userId:string;
-    orderItems: IOrderItem[];
+    orderItems:IOrderItem[];
     paymentMethod: string;
     orderDate: Date;
-    address: IAddress;
+    address:OrderAddress;
     totalAmount: number;
 }

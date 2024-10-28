@@ -4,10 +4,10 @@ import IOrder from "../../entity/orderEntity";
 
 const OrderSchema:Schema=new Schema({
     userId:{
-        type: mongoose.SchemaTypes.ObjectId,
+        type:mongoose.SchemaTypes.ObjectId,
         required: true
     },
-    orderItems: [{
+    orderItems:[{
         productId:{
             type: mongoose.SchemaTypes.ObjectId,
             required: true,
@@ -30,8 +30,8 @@ const OrderSchema:Schema=new Schema({
             required: true
         },
     }],
-    paymentMethod: {
-        type: String,
+    paymentMethod:{
+        type:String,
         required: true
     },
     orderDate:{
@@ -44,15 +44,15 @@ const OrderSchema:Schema=new Schema({
             required: true
         },
         address: {
-            type: String,
+            type:String,
             required: true
         },
-        phone: {
-            type: Number,
-            required: true,
+        phoneNumber: {
+            type:Number,
+            required:true,
         },
         city: {
-            type: String,
+            type: String,   
             required: true
         },
         postalCode: {

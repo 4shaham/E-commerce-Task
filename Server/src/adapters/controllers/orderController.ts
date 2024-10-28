@@ -17,9 +17,9 @@ export default class OrderController implements IOrderController {
         try {
             
             const userId=req.userId
-            const {paymentMethod,totalPrice}=req.body 
+            const {paymentMethod,totalPrice,selectedAddressId}=req.body 
 
-            await this.orderUseCase.createOrder(userId as string,paymentMethod,totalPrice)
+            await this.orderUseCase.createOrder(userId as string,paymentMethod,totalPrice,selectedAddressId)
             res.status(StatusCode.success).json({message:"order Successfully"})
 
 
@@ -27,6 +27,14 @@ export default class OrderController implements IOrderController {
              next(error)
         }
     }
+
+   async getOrder(req:IRequest,res:Response,next:NextFunction):Promise<void>{
+     try {
+        const userId=req.userId
+     } catch (error) {
+         next(error)
+     }
+   }
 
     async cancerlOrder(req:IRequest,res:Response,next:NextFunction):Promise<void>{
         try {

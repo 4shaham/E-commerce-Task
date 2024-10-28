@@ -15,7 +15,7 @@ dotenv.config()
 import authRouter from "../routes/authRouter"
 import adminRouter from "../routes/adminRouter"
 import cartRouter from "../routes/cartRouter"
-
+import orderRouter from '../routes/orderRouter'
 
 
 
@@ -34,8 +34,8 @@ app.use(cookieParser());
 
 
 app.use(cors({
-    // origin:"http://localhost:5173",
-    origin:"https://ecommerce.shaham.website",
+    origin:"http://localhost:5173",
+    // origin:"https://ecommerce.shaham.website",
     credentials:true
 }))
 
@@ -49,7 +49,7 @@ app.use(morgan('dev'))
 app.use('/api',authRouter)
 app.use('/api',cartRouter)
 app.use('/api/admin',adminRouter)
-
+app.use('/api',orderRouter)
 
 
 app.use(errorHandlerMiddleware)
