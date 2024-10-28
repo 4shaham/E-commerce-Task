@@ -1,72 +1,71 @@
-
-
-import { useEffect, useState } from 'react';
-import { PlusCircle} from 'lucide-react';
-import { Card, CardBody } from "@material-tailwind/react"
-import { getCart } from '../../api/user';
+import { useEffect, useState } from "react";
+import { PlusCircle } from "lucide-react";
+import { Card, CardBody } from "@material-tailwind/react";
+import { getCart } from "../../api/user";
 
 const CheckoutPage = () => {
   const [selectedAddress, setSelectedAddress] = useState(0);
-  const [selectedPayment, setSelectedPayment] = useState(0);
-  const [products,setProducts]=useState<any[]>()
+  const [selectedPayment, setSelectedPayment] = useState("");
 
-  useEffect(()=>{
-         const handleAsync=async()=>{
-            try {
-               const response=await getCart()
-               setProducts(response.data.cartData)
-            } catch (error) {
-              throw error
-            }
-         }
-         handleAsync()
-  },[])
+  const [products, setProducts] = useState<any[]>();
+
+  useEffect(() => {
+    const handleAsync = async () => {
+      try {
+        const response = await getCart();
+        setProducts(response.data.cartData);
+      } catch (error) {
+        throw error;
+      }
+    };
+    handleAsync();
+  }, []);
+
+  const handleSelect = (payment: string) => {
+    setSelectedPayment(payment);
+  };
 
   const addresses = [
     {
       id: 0,
-      name: 'John Doe',
-      street: '123 Fashion Street',
-      city: 'New York',
-      state: 'NY',
-      zip: '10001',
-      phone: '(555) 123-4567'
+      name: "John Doe",
+      street: "123 Fashion Street",
+      city: "New York",
+      state: "NY",
+      zip: "10001",
+      phone: "(555) 123-4567",
     },
     {
       id: 1,
-      name: 'John Doe',
-      street: '456 Style Avenue',
-      city: 'Brooklyn',
-      state: 'NY',
-      zip: '11201',
-      phone: '(555) 987-6543'
-    }
-  ];
-
-  const paymentMethods = [
-    {
-      id: 0,
-      type: 'Visa',
-      number: '•••• •••• •••• 4242',
-      expiry: '12/25'
+      name: "John Doe",
+      street: "456 Style Avenue",
+      city: "Brooklyn",
+      state: "NY",
+      zip: "11201",
+      phone: "(555) 987-6543",
     },
-    {
-      id: 1,
-      type: 'Mastercard',
-      number: '•••• •••• •••• 5555',
-      expiry: '09/24'
-    }
   ];
 
-  const subtotal = products?products?.reduce((total,values)=>values.cartItems.quantity*values.productDetails.price+total,0):0
-  const shipping = 4.95;
-  const total = subtotal + shipping;
+  const paymentMethods = ["cashOnDelivery", "online"];
+
+  const subtotal = products
+    ? products?.reduce(
+        (total, values) =>
+          values.cartItems.quantity * values.productDetails.price + total,
+        0
+      )
+    : 0;
+  const shipping = 0;
+  const tax = subtotal * 0.1;
+  const total = subtotal + shipping + tax;
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-2xl mx-auto px-4">
-        <h1 className="text-2xl font-light mb-8 uppercase tracking-wider">Shopping Bag</h1>
-        
+        <h1 className="text-2xl font-light mb-8 uppercase tracking-wider">
+          Shopping Bag
+        </h1>
+
         {/* Products */}
         <Card className="mb-6">
           <CardBody className="p-6">
@@ -82,12 +81,16 @@ const CheckoutPage = () => {
                   <div className="flex-grow">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="font-medium">{product.productDetails.pName}</h3>
+                        <h3 className="font-medium">
+                          {product.productDetails.pName}
+                        </h3>
                         <p className="text-gray-600 text-sm mt-1">
                           Size: {product.size} | Color: {product.color}
                         </p>
                       </div>
-                      <span className="font-medium">${product.productDetails.price.toFixed(2)}</span>
+                      <span className="font-medium">
+                        ${product.productDetails.price.toFixed(2)}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -110,7 +113,7 @@ const CheckoutPage = () => {
             </div>
           </CardBody>
         </Card>
-        
+
         {/* Shipping Address */}
         <Card className="mb-6">
           <CardBody className="p-6">
@@ -127,7 +130,11 @@ const CheckoutPage = () => {
                 <label
                   key={address.id}
                   className={`block p-4 border rounded-lg cursor-pointer
-                    ${selectedAddress === address.id ? 'border-black' : 'border-gray-200'}`}
+                    ${
+                      selectedAddress === address.id
+                        ? "border-black"
+                        : "border-gray-200"
+                    }`}
                 >
                   <div className="flex items-start">
                     <input
@@ -140,8 +147,10 @@ const CheckoutPage = () => {
                     <div>
                       <div className="font-medium">{address.name}</div>
                       <div className="text-gray-600">
-                        {address.street}<br />
-                        {address.city}, {address.state} {address.zip}<br />
+                        {address.street}
+                        <br />
+                        {address.city}, {address.state} {address.zip}
+                        <br />
                         {address.phone}
                       </div>
                     </div>
@@ -164,37 +173,33 @@ const CheckoutPage = () => {
             </div>
 
             <div className="space-y-3">
-              {paymentMethods.map((payment) => (
-                <label
-                  key={payment.id}
-                  className={`block p-4 border rounded-lg cursor-pointer
-                    ${selectedPayment === payment.id ? 'border-black' : 'border-gray-200'}`}
-                >
-                  <div className="flex items-start">
-                    <input
-                      type="radio"
-                      name="payment"
-                      checked={selectedPayment === payment.id}
-                      onChange={() => setSelectedPayment(payment.id)}
-                      className="mt-1 mr-3"
-                    />
-                    <div>
-                      <div className="font-medium">{payment.type}</div>
-                      <div className="text-gray-600">
-                        {payment.number}
-                        <br />
-                        Expires {payment.expiry}
-                      </div>
-                    </div>
-                  </div>
-                </label>
+              {paymentMethods.map((payment: string, index) => (
+                <div key={index} className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    id={payment}
+                    name="payment"
+                    value={payment}
+                    checked={selectedPayment === payment}
+                    onChange={() => handleSelect(payment)}
+                    className="cursor-pointer"
+                  />
+                  <label htmlFor={payment} className="cursor-pointer">
+                    {payment}
+                  </label>
+                </div>
               ))}
+
+              <p className="mt-4">
+                Selected Payment Method:{" "}
+                <strong>{selectedPayment || "None"}</strong>
+              </p>
             </div>
           </CardBody>
         </Card>
 
         {/* Continue Button */}
-       <button className="w-full bg-black text-white py-4 px-6 rounded-lg hover:bg-gray-800 transition-colors uppercase tracking-wider font-medium">
+        <button className="w-full bg-black text-white py-4 px-6 rounded-lg hover:bg-gray-800 transition-colors uppercase tracking-wider font-medium">
           Continue to Payment
         </button>
       </div>

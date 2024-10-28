@@ -12,7 +12,8 @@ const userEndPoints={
     removeCart:'/api/removeCart',
     getCart:'/api/getCart',
     updateCartQty:'/api/updateQuantity',
-    getProfileData:'/api/userData'
+    getProfileData:'/api/userData',
+    createOrder:"/saveOrder"
 }
 
 export default userEndPoints

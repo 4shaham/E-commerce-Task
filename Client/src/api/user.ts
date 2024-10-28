@@ -24,5 +24,5 @@ export const getProfileData=async():Promise<any>=>await api.get(userEndPoints.ge
 
 export const removeCart=async(id:string):Promise<any>=>await api.put(userEndPoints.removeCart,{id})
 
-
+export const createOrder=async(totalAmout:number,paymentMethod:"online"|"cashOnDelivery")=>await api.post(userEndPoints.createOrder,{totalAmout,paymentMethod})
 
