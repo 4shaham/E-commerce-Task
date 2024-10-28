@@ -34,8 +34,8 @@ app.use(cookieParser());
 
 
 app.use(cors({
-    origin:"http://localhost:5173",
-    // origin:"https://ecommerce.shaham.website",
+    // origin:"http://localhost:5173",
+    origin:"https://ecommerce.shaham.website",
     credentials:true
 }))
 
