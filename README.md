@@ -24,7 +24,6 @@ Dealls Cowboy is a modern e-commerce application focused on selling high-quality
 ## Getting Started
 
 ### Prerequisites
-
 Ensure you have the following installed on your local machine:
 - **Node.js** (>= 14.x)
 - **npm** or **yarn**
@@ -36,7 +35,7 @@ Ensure you have the following installed on your local machine:
 1. Clone this repository to your local machine:
 
     ```bash
-    git clone https://github.com/your-username/dealls-cowboy.git
+    git clone [https://github.com/4shaham/E-commerce-Task.git]
     cd E-commerce
     ```
 
