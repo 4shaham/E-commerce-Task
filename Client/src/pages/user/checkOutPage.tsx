@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { PlusCircle } from "lucide-react";
 import { Card, CardBody } from "@material-tailwind/react";
-import { getCart } from "../../api/user";
+import { createOrder, getCart } from "../../api/user";
 
 const CheckoutPage = () => {
   const [selectedAddress, setSelectedAddress] = useState(0);
-  const [selectedPayment, setSelectedPayment] = useState("");
+  const [selectedPayment, setSelectedPayment] = useState<"online"|"cashOnDelivery"|"">("");
 
   const [products, setProducts] = useState<any[]>();
 
@@ -21,9 +21,21 @@ const CheckoutPage = () => {
     handleAsync();
   }, []);
 
-  const handleSelect = (payment: string) => {
+  const handleSelect = (payment:"online"|"cashOnDelivery") => {
     setSelectedPayment(payment);
   };
+
+ 
+  const handleProceedToPayment=async()=>{
+    try {
+      
+      console.log("clickeddd")
+     let resp=await createOrder(total,selectedPayment as "online"|"cashOnDelivery")
+       console.log(resp)
+    } catch (error) {
+       console.log(error)
+    }
+  }
 
   const addresses = [
     {
@@ -181,7 +193,7 @@ const CheckoutPage = () => {
                     name="payment"
                     value={payment}
                     checked={selectedPayment === payment}
-                    onChange={() => handleSelect(payment)}
+                    onChange={() => handleSelect(payment as "online"|"cashOnDelivery")}
                     className="cursor-pointer"
                   />
                   <label htmlFor={payment} className="cursor-pointer">
@@ -199,7 +211,7 @@ const CheckoutPage = () => {
         </Card>
 
         {/* Continue Button */}
-        <button className="w-full bg-black text-white py-4 px-6 rounded-lg hover:bg-gray-800 transition-colors uppercase tracking-wider font-medium">
+        <button className="w-full bg-black text-white py-4 px-6 rounded-lg hover:bg-gray-800 transition-colors uppercase tracking-wider font-medium" onClick={handleProceedToPayment}>
           Continue to Payment
         </button>
       </div>
