@@ -1,69 +1,64 @@
 
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PlusCircle} from 'lucide-react';
 import { Card, CardBody } from "@material-tailwind/react"
+import { getCart } from '../../api/user';
 
 const CheckoutPage = () => {
   const [selectedAddress, setSelectedAddress] = useState(0);
   const [selectedPayment, setSelectedPayment] = useState(0);
+  const [products,setProducts]=useState<any[]>()
 
-  const products = [
-    {
-      id: 1,
-      name: 'OVERSIZED BLAZER',
-      price: 89.90,
-      color: 'Black',
-      size: 'M',
-      image: '/api/placeholder/120/160'
-    },
-    {
-      id: 2,
-      name: 'HIGH-WAIST JEANS',
-      price: 49.90,
-      color: 'Blue',
-      size: '30',
-      image: '/api/placeholder/120/160'
-    }
-  ];
+  useEffect(()=>{
+         const handleAsync=async()=>{
+            try {
+               const response=await getCart()
+               setProducts(response.data.cartData)
+            } catch (error) {
+              throw error
+            }
+         }
+         handleAsync()
+  },[])
 
-  const addresses = [
-    {
-      id: 0,
-      name: 'John Doe',
-      street: '123 Fashion Street',
-      city: 'New York',
-      state: 'NY',
-      zip: '10001',
-      phone: '(555) 123-4567'
-    },
-    {
-      id: 1,
-      name: 'John Doe',
-      street: '456 Style Avenue',
-      city: 'Brooklyn',
-      state: 'NY',
-      zip: '11201',
-      phone: '(555) 987-6543'
-    }
-  ];
+  // const addresses = [
+  //   {
+  //     id: 0,
+  //     name: 'John Doe',
+  //     street: '123 Fashion Street',
+  //     city: 'New York',
+  //     state: 'NY',
+  //     zip: '10001',
+  //     phone: '(555) 123-4567'
+  //   },
+  //   {
+  //     id: 1,
+  //     name: 'John Doe',
+  //     street: '456 Style Avenue',
+  //     city: 'Brooklyn',
+  //     state: 'NY',
+  //     zip: '11201',
+  //     phone: '(555) 987-6543'
+  //   }
+  // ];
 
-  const paymentMethods = [
-    {
-      id: 0,
-      type: 'Visa',
-      number: '•••• •••• •••• 4242',
-      expiry: '12/25'
-    },
-    {
-      id: 1,
-      type: 'Mastercard',
-      number: '•••• •••• •••• 5555',
-      expiry: '09/24'
-    }
-  ];
+  // const paymentMethods = [
+  //   {
+  //     id: 0,
+  //     type: 'Visa',
+  //     number: '•••• •••• •••• 4242',
+  //     expiry: '12/25'
+  //   },
+  //   {
+  //     id: 1,
+  //     type: 'Mastercard',
+  //     number: '•••• •••• •••• 5555',
+  //     expiry: '09/24'
+  //   }
+  // ];
 
-  const subtotal = products.reduce((sum, product) => sum + product.price, 0);
+  const subtotal = products?products?.reduce((total,values)=>values.cartItems.quantity*values.productDetails.price+total,0):0
   const shipping = 4.95;
   const total = subtotal + shipping;
 
@@ -77,22 +72,22 @@ const CheckoutPage = () => {
           <CardBody className="p-6">
             <h2 className="text-lg font-medium mb-6">Selected Items</h2>
             <div className="space-y-6">
-              {products.map((product) => (
+              {products?.map((product) => (
                 <div key={product.id} className="flex space-x-4">
                   <img
-                    src={product.image}
-                    alt={product.name}
+                    src={product.productDetails.image[0]}
+                    alt={product.productDetails.pName}
                     className="w-24 h-32 object-cover bg-gray-100"
                   />
                   <div className="flex-grow">
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="font-medium">{product.name}</h3>
+                        <h3 className="font-medium">{product.productDetails.pName}</h3>
                         <p className="text-gray-600 text-sm mt-1">
                           Size: {product.size} | Color: {product.color}
                         </p>
                       </div>
-                      <span className="font-medium">${product.price.toFixed(2)}</span>
+                      <span className="font-medium">${product.productDetails.price.toFixed(2)}</span>
                     </div>
                   </div>
                 </div>

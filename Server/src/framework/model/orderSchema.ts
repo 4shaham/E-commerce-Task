@@ -3,7 +3,7 @@ import IOrder from "../../entity/orderEntity";
 
 
 const OrderSchema:Schema=new Schema({
-    userId: {
+    userId:{
         type: mongoose.SchemaTypes.ObjectId,
         required: true
     },
@@ -34,7 +34,7 @@ const OrderSchema:Schema=new Schema({
         type: String,
         required: true
     },
-    orderDate: {
+    orderDate:{
         type: Date,
         default: Date.now()
     },
