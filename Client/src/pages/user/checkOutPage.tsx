@@ -22,41 +22,41 @@ const CheckoutPage = () => {
          handleAsync()
   },[])
 
-  // const addresses = [
-  //   {
-  //     id: 0,
-  //     name: 'John Doe',
-  //     street: '123 Fashion Street',
-  //     city: 'New York',
-  //     state: 'NY',
-  //     zip: '10001',
-  //     phone: '(555) 123-4567'
-  //   },
-  //   {
-  //     id: 1,
-  //     name: 'John Doe',
-  //     street: '456 Style Avenue',
-  //     city: 'Brooklyn',
-  //     state: 'NY',
-  //     zip: '11201',
-  //     phone: '(555) 987-6543'
-  //   }
-  // ];
+  const addresses = [
+    {
+      id: 0,
+      name: 'John Doe',
+      street: '123 Fashion Street',
+      city: 'New York',
+      state: 'NY',
+      zip: '10001',
+      phone: '(555) 123-4567'
+    },
+    {
+      id: 1,
+      name: 'John Doe',
+      street: '456 Style Avenue',
+      city: 'Brooklyn',
+      state: 'NY',
+      zip: '11201',
+      phone: '(555) 987-6543'
+    }
+  ];
 
-  // const paymentMethods = [
-  //   {
-  //     id: 0,
-  //     type: 'Visa',
-  //     number: '•••• •••• •••• 4242',
-  //     expiry: '12/25'
-  //   },
-  //   {
-  //     id: 1,
-  //     type: 'Mastercard',
-  //     number: '•••• •••• •••• 5555',
-  //     expiry: '09/24'
-  //   }
-  // ];
+  const paymentMethods = [
+    {
+      id: 0,
+      type: 'Visa',
+      number: '•••• •••• •••• 4242',
+      expiry: '12/25'
+    },
+    {
+      id: 1,
+      type: 'Mastercard',
+      number: '•••• •••• •••• 5555',
+      expiry: '09/24'
+    }
+  ];
 
   const subtotal = products?products?.reduce((total,values)=>values.cartItems.quantity*values.productDetails.price+total,0):0
   const shipping = 4.95;
