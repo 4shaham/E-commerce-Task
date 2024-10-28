@@ -108,15 +108,14 @@ const SingleProductPage = () => {
           <div className="flex flex-col space-y-6 my-auto">
             <div>
               <h1 className="text-2xl font-light mb-2">{product?.pName}</h1>
-              <p className="text-xl">{product?.price}</p>
+              <p className="text-xl">Price:{product?.price}</p>
             </div>
+            <p className="text-gray-600">Description:{product?.description}</p>
+            <p className="text-gray-600">Quantity:{product?.quantity}</p> 
 
-            <p className="text-gray-600">{product?.description}</p>
-
-            <div>
-              <p className="mb-3 text-sm">SELECT SIZE</p>
-              <div className="flex flex-wrap gap-2">{product?.size}</div>
-            </div>
+            
+              <div className="text-gray-600">Size:{product?.size}</div>
+          
 
             {/* Quantity */}
             {/* <div>

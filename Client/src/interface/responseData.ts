@@ -38,3 +38,13 @@ export interface IUser{
   userName: string;
   password: string;
 }
+
+export interface IResAddress {
+  _id:string
+  name: string;
+  postalCode: number;
+  address: string;
+  phoneNumber: number;
+  city: string;
+  defaultAddress: boolean;
+}

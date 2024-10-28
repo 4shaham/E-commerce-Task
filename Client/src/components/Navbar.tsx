@@ -15,7 +15,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../api/user";
 import { logOutStatusChange } from "../redux/slice/userAuthSlice";
 
@@ -49,6 +49,7 @@ function NavList() {
 
 export default function NavbarWithMegaMenu() {
   const [openNav, setOpenNav] = React.useState(false);
+  const navigate=useNavigate()
   const dispatch=useDispatch()
   let userAuthStatus: boolean = useSelector(
     (state: any) => state.userReducer.userAuthStatus
@@ -66,6 +67,7 @@ export default function NavbarWithMegaMenu() {
             
             await logout()
             dispatch(logOutStatusChange())
+            navigate("/")
 
           } catch (error) {
               
@@ -81,7 +83,7 @@ export default function NavbarWithMegaMenu() {
           variant="h6"
           className="mr-4 cursor-pointer py-1.5 lg:ml-2"
         >
-          E-Commerce
+          Dellas CowBoy
         </Typography>
         <div className="hidden lg:block">
           <NavList />

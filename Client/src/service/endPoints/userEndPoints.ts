@@ -13,7 +13,9 @@ const userEndPoints={
     getCart:'/api/getCart',
     updateCartQty:'/api/updateQuantity',
     getProfileData:'/api/userData',
-    createOrder:"/saveOrder"
+    createOrder:"/api/saveOrder",
+    addAddress:"/api/addAddress",
+    getAddress:'/api/getAddres'
 }
 
 export default userEndPoints

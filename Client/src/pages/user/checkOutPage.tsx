@@ -1,19 +1,33 @@
 import { useEffect, useState } from "react";
 import { PlusCircle } from "lucide-react";
-import { Card, CardBody } from "@material-tailwind/react";
-import { createOrder, getCart } from "../../api/user";
+import { Card, CardBody, Typography } from "@material-tailwind/react";
+import { createOrder, getAddress, getCart } from "../../api/user";
+import { IResAddress } from "../../interface/responseData";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutPage = () => {
-  const [selectedAddress, setSelectedAddress] = useState(0);
-  const [selectedPayment, setSelectedPayment] = useState<"online"|"cashOnDelivery"|"">("");
-
+  const [selectedAddress, setSelectedAddress] = useState("");
+  const [selectedPayment, setSelectedPayment] = useState<
+    "online" | "cashOnDelivery" | ""
+  >("");
+  const [adderess, setAddress] = useState<IResAddress[]>();
+  const [errorMsg, setErrorMsg] = useState("");
   const [products, setProducts] = useState<any[]>();
+  const navigate=useNavigate()
+  const [loading,setLoading]=useState<boolean>(true)
 
   useEffect(() => {
     const handleAsync = async () => {
       try {
         const response = await getCart();
+        if(!response.data.cartData.length){
+           navigate('/')
+        }
+        setLoading(false)
         setProducts(response.data.cartData);
+        const address = await getAddress();
+        console.log(address);
+        setAddress(address.data.addres.address);
       } catch (error) {
         throw error;
       }
@@ -21,44 +35,64 @@ const CheckoutPage = () => {
     handleAsync();
   }, []);
 
-  const handleSelect = (payment:"online"|"cashOnDelivery") => {
+  if(loading){
+    return (
+      <div>..loading</div>
+    )
+  }
+
+  const handleSelect = (payment: "online" | "cashOnDelivery") => {
     setSelectedPayment(payment);
   };
 
- 
-  const handleProceedToPayment=async()=>{
+  const handleProceedToPayment = async () => {
     try {
-      
-      console.log("clickeddd")
-     let resp=await createOrder(total,selectedPayment as "online"|"cashOnDelivery")
-       console.log(resp)
+
+      if (!selectedPayment) {
+        setErrorMsg("choose any payment Method");
+        return;
+      }
+
+      if (selectedAddress == "" || !selectedAddress) {
+        setErrorMsg("choose any addresss");
+        return;
+      }
+
+      await createOrder(
+        total,
+        selectedPayment as "online" | "cashOnDelivery",
+        selectedAddress
+      );
+
+
+
     } catch (error) {
-       console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  const addresses = [
-    {
-      id: 0,
-      name: "John Doe",
-      street: "123 Fashion Street",
-      city: "New York",
-      state: "NY",
-      zip: "10001",
-      phone: "(555) 123-4567",
-    },
-    {
-      id: 1,
-      name: "John Doe",
-      street: "456 Style Avenue",
-      city: "Brooklyn",
-      state: "NY",
-      zip: "11201",
-      phone: "(555) 987-6543",
-    },
-  ];
+  // const addresses = [
+  //   {
+  //     id: 0,
+  //     name: "John Doe",
+  //     street: "123 Fashion Street",
+  //     city: "New York",
+  //     state: "NY",
+  //     zip: "10001",
+  //     phone: "(555) 123-4567",
+  //   },
+  //   {
+  //     id: 1,
+  //     name: "John Doe",
+  //     street: "456 Style Avenue",
+  //     city: "Brooklyn",
+  //     state: "NY",
+  //     zip: "11201",
+  //     phone: "(555) 987-6543",
+  //   },
+  // ];
 
-  const paymentMethods = ["cashOnDelivery", "online"];
+  const paymentMethods = ["cashOnDelivery"];
 
   const subtotal = products
     ? products?.reduce(
@@ -138,12 +172,12 @@ const CheckoutPage = () => {
             </div>
 
             <div className="space-y-3">
-              {addresses.map((address) => (
+              {adderess?.map((address, index) => (
                 <label
-                  key={address.id}
+                  key={index}
                   className={`block p-4 border rounded-lg cursor-pointer
                     ${
-                      selectedAddress === address.id
+                      selectedAddress === address._id
                         ? "border-black"
                         : "border-gray-200"
                     }`}
@@ -152,18 +186,18 @@ const CheckoutPage = () => {
                     <input
                       type="radio"
                       name="address"
-                      checked={selectedAddress === address.id}
-                      onChange={() => setSelectedAddress(address.id)}
+                      checked={selectedAddress === address._id}
+                      onChange={() => setSelectedAddress(address._id)}
                       className="mt-1 mr-3"
                     />
                     <div>
                       <div className="font-medium">{address.name}</div>
                       <div className="text-gray-600">
-                        {address.street}
+                        {address.address}
                         <br />
-                        {address.city}, {address.state} {address.zip}
+                        {address.city}
                         <br />
-                        {address.phone}
+                        {address.phoneNumber}
                       </div>
                     </div>
                   </div>
@@ -193,7 +227,9 @@ const CheckoutPage = () => {
                     name="payment"
                     value={payment}
                     checked={selectedPayment === payment}
-                    onChange={() => handleSelect(payment as "online"|"cashOnDelivery")}
+                    onChange={() =>
+                      handleSelect(payment as "online" | "cashOnDelivery")
+                    }
                     className="cursor-pointer"
                   />
                   <label htmlFor={payment} className="cursor-pointer">
@@ -207,11 +243,17 @@ const CheckoutPage = () => {
                 <strong>{selectedPayment || "None"}</strong>
               </p>
             </div>
+            <Typography className="text-center text-red-300">
+              {errorMsg}
+            </Typography>
           </CardBody>
         </Card>
 
         {/* Continue Button */}
-        <button className="w-full bg-black text-white py-4 px-6 rounded-lg hover:bg-gray-800 transition-colors uppercase tracking-wider font-medium" onClick={handleProceedToPayment}>
+        <button
+          onClick={handleProceedToPayment}
+          className="w-full bg-black text-white py-4 px-6 rounded-lg hover:bg-gray-800 transition-colors uppercase tracking-wider font-medium"
+        >
           Continue to Payment
         </button>
       </div>

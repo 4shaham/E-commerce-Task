@@ -1,14 +1,11 @@
-import {useEffect,useState} from "react";
-import {Card,CardBody} from "@material-tailwind/react";
+import { useEffect, useState } from "react";
+import { Card, CardBody } from "@material-tailwind/react";
 import { Button } from "@material-tailwind/react";
 import { Minus, Plus, X, ShoppingBag, Lock } from "lucide-react";
 import { getCart, removeCart } from "../../api/user";
 import { Link } from "react-router-dom";
 
-
 const CartPage = () => {
-
-
   const [items, setItems] = useState<any[]>();
 
   useEffect(() => {
@@ -24,43 +21,40 @@ const CartPage = () => {
     handleAsync();
   }, []);
 
-  const removeItem = async(id:string)=>{
+  const removeItem = async (id: string) => {
     try {
-     await removeCart(id)
-     setItems(items?.filter((item:any)=>item.cartItems.productId !=id ));
+      await removeCart(id);
+      setItems(items?.filter((item: any) => item.cartItems.productId != id));
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  
- };
+  };
 
-
-
- const subtotal=items?items?.reduce((total,values)=>values.cartItems.quantity*values.productDetails.price+total,0):0
- const shipping =0;
- const tax = subtotal*0.1;
- const total=subtotal+shipping+tax;
-  const updateQuantity = (id: any,change:any)=>{
-     setItems(
+  const subtotal = items
+    ? items?.reduce(
+        (total, values) =>
+          values.cartItems.quantity * values.productDetails.price + total,
+        0
+      )
+    : 0;
+  const shipping = 0;
+  const tax = subtotal * 0.1;
+  const total = subtotal + shipping + tax;
+  const updateQuantity = (id: any, change: any) => {
+    setItems(
       items?.map((item) =>
         item.cartItems._id === id
           ? {
               ...item,
-              cartItems:{
+              cartItems: {
                 ...item.cartItems,
-                quantity:Math.max(1, item.cartItems.quantity+change),
+                quantity: Math.max(1, item.cartItems.quantity + change),
               },
             }
-          :item
+          : item
       )
     );
-
-    console.log(items?.reduce((total,values)=>values.cartItems.quantity*values.productDetails.price+total,0))
-    
-    console.log(items)
   };
-
-
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -107,7 +101,9 @@ const CartPage = () => {
                         <div className="flex justify-between items-center mt-4">
                           <div className="flex items-center border rounded-lg">
                             <button
-                              onClick={() => updateQuantity(item.cartItems._id, -1)}
+                              onClick={() =>
+                                updateQuantity(item.cartItems._id, -1)
+                              }
                               className="p-2 hover:bg-gray-50"
                             >
                               <Minus className="h-4 w-4" />
@@ -116,7 +112,9 @@ const CartPage = () => {
                               {item.cartItems.quantity}
                             </span>
                             <button
-                              onClick={() => updateQuantity(item.cartItems._id,1)}
+                              onClick={() =>
+                                updateQuantity(item.cartItems._id, 1)
+                              }
                               className="p-2 hover:bg-gray-50"
                             >
                               <Plus className="h-4 w-4" />
