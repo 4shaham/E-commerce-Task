@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ShoppingBag,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, ShoppingBag } from "lucide-react";
 import { addCart, getProduct } from "../../api/user";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IProduct } from "../../interface/responseData";
@@ -15,8 +11,10 @@ const SingleProductPage = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const query: string | null = searchParams.get("id");
-  const userAuthStatus=useSelector((state:any)=>state.userReducer.userAuthStatus)
-  const navigate=useNavigate()
+  const userAuthStatus = useSelector(
+    (state: any) => state.userReducer.userAuthStatus
+  );
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleFn = async () => {
@@ -28,7 +26,7 @@ const SingleProductPage = () => {
       }
     };
     handleFn();
-  },[]);
+  }, []);
 
   const nextImage = () => {
     if (!product) {
@@ -48,23 +46,20 @@ const SingleProductPage = () => {
     );
   };
 
+  const handleClickCartBag = async () => {
+    try {
+      if (!userAuthStatus) {
+        navigate("/login");
+        return;
+      }
 
-  const handleClickCartBag=async()=>{
-       try {
-        
-        if(!userAuthStatus){
-            navigate('/login')
-            return
-        }
-
-      const responsw=await addCart(product?._id as string)
-      console.log(responsw)
-        navigate('/cart')
-
-       } catch (error) {
-          console.log(error)
-       }
-  }
+      const responsw = await addCart(product?._id as string);
+      console.log(responsw);
+      navigate("/cart");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -111,11 +106,9 @@ const SingleProductPage = () => {
               <p className="text-xl">Price:{product?.price}</p>
             </div>
             <p className="text-gray-600">Description:{product?.description}</p>
-            <p className="text-gray-600">Quantity:{product?.quantity}</p> 
+            <p className="text-gray-600">Quantity:{product?.quantity}</p>
 
-            
-              <div className="text-gray-600">Size:{product?.size}</div>
-          
+            <div className="text-gray-600">Size:{product?.size}</div>
 
             {/* Quantity */}
             {/* <div>
@@ -139,13 +132,23 @@ const SingleProductPage = () => {
 
             {/* Action Buttons */}
             <div className="flex gap-4">
-              <button
-                className="flex-1 bg-black text-white py-4 px-6 hover:bg-gray-800 flex items-center justify-center gap-2"
-                onClick={handleClickCartBag}
-              >
-                <ShoppingBag className="w-5 h-5" />
-                ADD TO BAG
-              </button>
+              {product?.quantity && 0 < product?.quantity ? (
+                <button
+                  className="flex-1 bg-black text-white py-4 px-6 hover:bg-gray-800 flex items-center justify-center gap-2"
+                  onClick={handleClickCartBag}
+                >
+                  <ShoppingBag className="w-5 h-5" />
+                  ADD TO BAG
+                </button>
+              ) : (
+                <button
+                  className="flex-1 bg-black text-white py-4 px-6 hover:bg-gray-800 flex items-center justify-center gap-2"
+                >
+                  <ShoppingBag className="w-5 h-5" />
+                  Out Of Stock
+                </button>
+              )}
+
               {/* <button className="p-4 border border-gray-300 hover:border-gray-400">
                 <Heart className="w-5 h-5" />
               </button> */}
