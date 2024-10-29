@@ -13,18 +13,19 @@ const CheckoutPage = () => {
   const [adderess, setAddress] = useState<IResAddress[]>();
   const [errorMsg, setErrorMsg] = useState("");
   const [products, setProducts] = useState<any[]>();
-  const navigate=useNavigate()
-  const [loading,setLoading]=useState<boolean>(true)
-  const [buttonLoading,setButtonLoading]=useState<boolean>(false)
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
+
 
   useEffect(() => {
     const handleAsync = async () => {
       try {
         const response = await getCart();
-        if(!response.data.cartData.length){
-           navigate('/')
+        if (!response.data.cartData.length) {
+          navigate("/");
         }
-        setLoading(false)
+        setLoading(false);
         setProducts(response.data.cartData);
         const address = await getAddress();
         console.log(address);
@@ -36,10 +37,8 @@ const CheckoutPage = () => {
     handleAsync();
   }, []);
 
-  if(loading){
-    return (
-      <div>..loading</div>
-    )
+  if (loading) {
+    return <div>..loading</div>;
   }
 
   const handleSelect = (payment: "online" | "cashOnDelivery") => {
@@ -48,8 +47,6 @@ const CheckoutPage = () => {
 
   const handleProceedToPayment = async () => {
     try {
-
-    
       if (!selectedPayment) {
         setErrorMsg("choose any payment Method");
         return;
@@ -60,42 +57,21 @@ const CheckoutPage = () => {
         return;
       }
 
-      setButtonLoading(true)
+      setButtonLoading(true);
 
       await createOrder(
         total,
         selectedPayment as "online" | "cashOnDelivery",
         selectedAddress
       );
-      setButtonLoading(false)
-
-
-
+      setButtonLoading(false);
+      navigate('/profile')
     } catch (error) {
-      console.log(error);
+      setButtonLoading(false);
     }
   };
 
-  // const addresses = [
-  //   {
-  //     id: 0,
-  //     name: "John Doe",
-  //     street: "123 Fashion Street",
-  //     city: "New York",
-  //     state: "NY",
-  //     zip: "10001",
-  //     phone: "(555) 123-4567",
-  //   },
-  //   {
-  //     id: 1,
-  //     name: "John Doe",
-  //     street: "456 Style Avenue",
-  //     city: "Brooklyn",
-  //     state: "NY",
-  //     zip: "11201",
-  //     phone: "(555) 987-6543",
-  //   },
-  // ];
+
 
   const paymentMethods = ["cashOnDelivery"];
 
@@ -256,22 +232,18 @@ const CheckoutPage = () => {
 
         {/* Continue Button */}
 
-        {buttonLoading?
+        {buttonLoading ? (
+          <button className="w-full bg-black text-white py-4 px-6 rounded-lg hover:bg-gray-800 transition-colors uppercase tracking-wider font-medium">
+            ...loading
+          </button>
+        ) : (
           <button
-      
-          className="w-full bg-black text-white py-4 px-6 rounded-lg hover:bg-gray-800 transition-colors uppercase tracking-wider font-medium"
-        >
-          ...loading
-        </button>:
-             <button
-             onClick={handleProceedToPayment}
-             className="w-full bg-black text-white py-4 px-6 rounded-lg hover:bg-gray-800 transition-colors uppercase tracking-wider font-medium"
-           >
-             Continue to Payment
-           </button>
-        }
-         
-       
+            onClick={handleProceedToPayment}
+            className="w-full bg-black text-white py-4 px-6 rounded-lg hover:bg-gray-800 transition-colors uppercase tracking-wider font-medium"
+          >
+            Continue to Payment
+          </button>
+        )}
       </div>
     </div>
   );
