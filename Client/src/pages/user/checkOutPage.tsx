@@ -15,6 +15,7 @@ const CheckoutPage = () => {
   const [products, setProducts] = useState<any[]>();
   const navigate=useNavigate()
   const [loading,setLoading]=useState<boolean>(true)
+  const [buttonLoading,setButtonLoading]=useState<boolean>(false)
 
   useEffect(() => {
     const handleAsync = async () => {
@@ -48,6 +49,7 @@ const CheckoutPage = () => {
   const handleProceedToPayment = async () => {
     try {
 
+    
       if (!selectedPayment) {
         setErrorMsg("choose any payment Method");
         return;
@@ -58,11 +60,14 @@ const CheckoutPage = () => {
         return;
       }
 
+      setButtonLoading(true)
+
       await createOrder(
         total,
         selectedPayment as "online" | "cashOnDelivery",
         selectedAddress
       );
+      setButtonLoading(false)
 
 
 
@@ -250,12 +255,23 @@ const CheckoutPage = () => {
         </Card>
 
         {/* Continue Button */}
-        <button
-          onClick={handleProceedToPayment}
+
+        {buttonLoading?
+          <button
+      
           className="w-full bg-black text-white py-4 px-6 rounded-lg hover:bg-gray-800 transition-colors uppercase tracking-wider font-medium"
         >
-          Continue to Payment
-        </button>
+          ...loading
+        </button>:
+             <button
+             onClick={handleProceedToPayment}
+             className="w-full bg-black text-white py-4 px-6 rounded-lg hover:bg-gray-800 transition-colors uppercase tracking-wider font-medium"
+           >
+             Continue to Payment
+           </button>
+        }
+         
+       
       </div>
     </div>
   );
