@@ -77,6 +77,7 @@ export default class OrderUseCase implements IOrderUseCase {
       
 
     } catch (error) {
+      console.log(error,"this error")
       throw error;
     }
   }
