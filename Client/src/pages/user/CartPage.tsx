@@ -41,6 +41,22 @@ const CartPage = () => {
   const tax = subtotal * 0.1;
   const total = subtotal + shipping + tax;
   const updateQuantity = (id: any, change: any) => {
+
+    const cartProductToIncrement=items?.filter((items)=>items.cartItems._id==id)
+    if(!cartProductToIncrement?.length){
+      return
+    }
+    let cartQty=cartProductToIncrement[0].cartItems.quantity
+    
+    let prQty=cartProductToIncrement[0].productDetails.quantity
+
+    console.log(prQty ,"hshshs")
+
+    if(prQty<(cartQty+change)){
+      return "reroe"
+    }
+
+
     setItems(
       items?.map((item) =>
         item.cartItems._id === id
